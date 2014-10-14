@@ -21,6 +21,29 @@
 #include "queue.h++"
 using namespace hurricane;
 
-queue::queue(size_t element_count __attribute__((unused)))
+queue::queue(size_t element_count)
+    : _count(element_count),
+      _start(0),
+      _used(0),
+      _data(element_count)
 {
+}
+
+word queue::deq(void)
+{
+    std::unique_lock<std::mutex> lock(_lock);
+    _signal.wait(lock, [&](){ return _used > 0; });
+    auto out = _data[_start];
+    _start = (_start + 1) % _count;
+    _used--;
+    return out;
+}
+
+void queue::enq(word d)
+{
+    std::unique_lock<std::mutex> lock(_lock);
+    _signal.wait(lock, [&](){ return _used < _count; });
+    auto tail = (_start + _used) % _count;
+    _data[tail] = d;
+    _used++;
 }

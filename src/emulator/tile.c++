@@ -36,3 +36,27 @@ int tile::join(void)
 {
     return _main.get();
 }
+
+void tile::send(enum direction dir, word dat)
+{
+    auto ql = _queues_out.find(dir);
+    if (ql == _queues_out.end()) {
+        fprintf(stderr, "Attempted to read non-existing queue\n");
+        abort();
+    }
+    auto q = ql->second;
+
+    q->enq(dat);
+}
+
+word tile::recv(enum direction dir)
+{
+    auto ql = _queues_in.find(dir);
+    if (ql == _queues_in.end()) {
+        fprintf(stderr, "Attempted to read non-existing queue\n");
+        abort();
+    }
+    auto q = ql->second;
+
+    return q->deq();
+}

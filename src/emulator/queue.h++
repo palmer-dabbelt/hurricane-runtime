@@ -28,17 +28,34 @@ namespace hurricane {
     typedef std::shared_ptr<queue> queue_ptr;
 }
 
+#include "word.h++"
+#include <atomic>
+#include <condition_variable>
+#include <mutex>
+#include <vector>
+
 namespace hurricane {
     class queue {
     public:
         static const size_t default_queue_size = 8;
 
     private:
+        size_t _count;
+        size_t _start, _used;
+        std::vector<word> _data;
+        std::mutex _lock;
+        std::condition_variable _signal;
 
     public:
         /* Creates a single queue (implemented as a circular memory
          * buffer) that contains the given element count. */
         queue(size_t element_count = default_queue_size);
+
+    public:
+        /* Inserts or removes from the queue, blocking if no space is
+         * availiable. */
+        word deq(void);
+        void enq(word d);
     };
 }
 
