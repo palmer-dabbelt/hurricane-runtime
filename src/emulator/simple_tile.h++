@@ -37,8 +37,7 @@ namespace hurricane {
 
         ~simple_tile(void) {}
 
-        int main(size_t x_posn __attribute__((unused)),
-                 size_t y_posn __attribute__((unused)))
+        virtual int main(void)
             { return 0; }
     };
 }
