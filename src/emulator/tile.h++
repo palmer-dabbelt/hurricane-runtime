@@ -34,6 +34,7 @@ namespace hurricane {
 #include "direction.h++"
 #include "queue.h++"
 #include "word.h++"
+#include <atomic>
 #include <map>
 #include <vector>
 
@@ -50,7 +51,8 @@ namespace hurricane {
          * here I'm using a "future" because I can't seem to otherwise
          * get the return value from a std::thread, which is a bit
          * odd... */
-        std::future<int> _main;
+        std::thread _main;
+        int _main_ret;
 
         /* FIXME: These shouldn't be public, but the array constructor
          * wants access to them via a special static function... */
@@ -77,8 +79,7 @@ namespace hurricane {
         /* The main function for this tile, which begins running with
          * its position stored in registers. */
         virtual int main(void) = 0;
-        static int main_wrapper(tile* t)
-            { return t->main(); }
+        static void main_wrapper(tile* t);
 
         /* These functions allow one to enqueue or dequeue a word from
          * one of the network ports.  These will block until data is

@@ -29,12 +29,21 @@ tile::tile(size_t x_posn, size_t y_posn)
 
 void tile::fork(void)
 {
-    _main = std::async(main_wrapper, this);
+    _main = std::thread(main_wrapper, this);
 }
 
 int tile::join(void)
 {
-    return _main.get();
+    _main.join();
+    std::atomic_thread_fence(std::memory_order_seq_cst);
+    return _main_ret;
+}
+
+void tile::main_wrapper(tile* t)
+{
+    auto ret = t->main();
+    t->_main_ret = ret;
+    std::atomic_thread_fence(std::memory_order_seq_cst);
 }
 
 void tile::send(enum direction dir, word dat)
