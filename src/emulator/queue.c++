@@ -36,6 +36,7 @@ word queue::deq(void)
     auto out = _data[_start];
     _start = (_start + 1) % _count;
     _used--;
+    _signal.notify_all();
     return out;
 }
 
@@ -46,4 +47,5 @@ void queue::enq(word d)
     auto tail = (_start + _used) % _count;
     _data[tail] = d;
     _used++;
+    _signal.notify_all();
 }
