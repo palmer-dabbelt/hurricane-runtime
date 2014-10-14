@@ -1,0 +1,32 @@
+# I want to be extra safe so the compiler can optimize
+LANGUAGES   += c++
+COMPILEOPTS += -std=c++11
+COMPILEOPTS += -Wall
+COMPILEOPTS += -Wextra
+COMPILEOPTS += -pedantic
+COMPILEOPTS += -Werror
+
+# C++ libraries just need _every_ header file
+LANGUAGES   += c++
+COMPILEOPTS += -Isrc
+
+# Allows headers to be copied
+LANGUAGES += h
+
+# Allows pkg-config files to be generated with a version number
+LANGUAGES += pkgconfig
+LINKOPTS  += -Sobj/proc/version-pc.sed
+
+# Generate a version number for everyone
+GENERATE += version.h
+GENERATE += version-pc.sed
+
+# The Hurricane emulation library, which allows code written in the
+# low-level Hurricane language to be executed on platforms without
+# Hurricane hardware support.  This is intended to be used to test
+# code for correctness, but not get good performance.
+LIBRARIES   += libhurricane-emulator.so
+CONFIG      += libhurricane-emulator_sources
+CONFIG      += libhurricane-emulator_headers
+LIBRARIES   += pkgconfig/hurricane-emulator.pc
+SOURCES     += emulator/hurricane-emulator.pc

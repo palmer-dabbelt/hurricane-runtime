@@ -1,0 +1,8 @@
+#!/bin/bash
+
+cd src/emulator
+find . -iname "*.h++" | while read f
+do
+  echo "HEADERS += hurricane-emulator/hurricane/$f"
+  echo "SOURCES += emulator/$f"
+done

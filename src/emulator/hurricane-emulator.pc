@@ -1,0 +1,10 @@
+prefix=@@pconfigure_prefix@@
+exec_prefix=@@pconfigure_prefix@@
+libdir=${prefix}/@@pconfigure_libdir@@
+includedir=${prefix}/@@pconfigure_hdrdir@@
+
+Name: hurricane-emulator
+Description: Hurricane emulation (without hardware) library
+Version: @@pconfigure_version@@
+Libs: -Wl,-rpath,${libdir} -L${libdir} -lhurricane-emulator
+Cflags: -I${includedir}/hurricane-emulator
