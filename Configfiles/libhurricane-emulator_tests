@@ -1,0 +1,9 @@
+#!/bin/bash
+
+cd test/libhurricane-emulator.so
+find * -iname "*.c++" -type f | while read f
+do
+    echo "TESTS += $f"
+    echo "LINKOPTS += -lhurricane-emulator"
+    echo "SOURCES += $f"
+done

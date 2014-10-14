@@ -10,6 +10,11 @@ COMPILEOPTS += -Werror
 LANGUAGES   += c++
 COMPILEOPTS += -Isrc
 
+# Some platforms need -pthread for C++ threads
+LANGUAGES   += c++
+COMPILEOPTS += -pthread
+LINKOPTS    += -pthread
+
 # Allows headers to be copied
 LANGUAGES += h
 
@@ -27,6 +32,10 @@ GENERATE += version-pc.sed
 # code for correctness, but not get good performance.
 LIBRARIES   += libhurricane-emulator.so
 CONFIG      += libhurricane-emulator_sources
+
+CONFIG      += libhurricane-emulator_tests
+
 CONFIG      += libhurricane-emulator_headers
+
 LIBRARIES   += pkgconfig/hurricane-emulator.pc
 SOURCES     += emulator/hurricane-emulator.pc
