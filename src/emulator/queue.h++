@@ -18,28 +18,27 @@
  * along with dreamer-sim.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LIBHURRICANE_EMULATOR__SIMPLE_TILE_HXX
-#define LIBHURRICANE_EMULATOR__SIMPLE_TILE_HXX
+#ifndef LIBHURRICANE_EMULATOR__QUEUE_HXX
+#define LIBHURRICANE_EMULATOR__QUEUE_HXX
 
-#include "tile.h++"
+#include <memory>
 
 namespace hurricane {
-    /* This simple tile is really only useful for checking that
-     * hurricane is capable of building the relevant templates fully.
-     * It's probably not useful for anything because it doesn't
-     * execute any code at all... */
-    class simple_tile: public tile {
+    class queue;
+    typedef std::shared_ptr<queue> queue_ptr;
+}
+
+namespace hurricane {
+    class queue {
     public:
-        simple_tile(size_t x_posn, size_t y_posn)
-            : hurricane::tile(x_posn, y_posn)
-            {
-            }
+        static const size_t default_queue_size = 8;
 
-        ~simple_tile(void) {}
+    private:
 
-        int main(size_t x_posn __attribute__((unused)),
-                 size_t y_posn __attribute__((unused)))
-            { return 0; }
+    public:
+        /* Creates a single queue (implemented as a circular memory
+         * buffer) that contains the given element count. */
+        queue(size_t element_count = default_queue_size);
     };
 }
 

@@ -10,7 +10,7 @@ public:
         }
 
 public:
-    int main(void)
+    virtual int main(void)
         {
             return x_posn() * 100 + y_posn();
         }

@@ -18,8 +18,8 @@
  * along with dreamer-sim.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LIBDRMET__ON_TILE_HXX
-#define LIBDRMET__ON_TILE_HXX
+#ifndef LIBHURRICANE_EMULATOR__ON_TILE_HXX
+#define LIBHURRICANE_EMULATOR__ON_TILE_HXX
 
 #include <cstddef>
 #include <cstdlib>

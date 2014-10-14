@@ -18,13 +18,13 @@
  * along with dreamer-sim.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LIBDRMET__WORD_HXX
-#define LIBDRMET__WORD_HXX
+#ifndef LIBHURRICANE_EMULATOR__WORD_HXX
+#define LIBHURRICANE_EMULATOR__WORD_HXX
 
 #include <cstdint>
 
 namespace hurricane {
-    typedef uint32_t word;
+    typedef uint64_t word;
 }
 
 #endif

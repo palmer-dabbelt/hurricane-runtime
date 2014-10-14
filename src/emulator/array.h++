@@ -18,8 +18,8 @@
  * along with dreamer-sim.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LIBDRMET__ARRAY_HXX
-#define LIBDRMET__ARRAY_HXX
+#ifndef LIBHURRICANE_EMULATOR__ARRAY_HXX
+#define LIBHURRICANE_EMULATOR__ARRAY_HXX
 
 #include "on_tile.h++"
 #include "tile.h++"
@@ -48,6 +48,10 @@ namespace hurricane {
               std::function<tile_ptr(size_t width,
                                      size_t height)> func
             );
+
+    public:
+        size_t width (void) const { return _width;  }
+        size_t height(void) const { return _height; }
 
     public:
         /* This actually starts executing the program that was setup

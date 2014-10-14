@@ -18,29 +18,9 @@
  * along with dreamer-sim.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LIBHURRICANE_EMULATOR__SIMPLE_TILE_HXX
-#define LIBHURRICANE_EMULATOR__SIMPLE_TILE_HXX
+#include "queue.h++"
+using namespace hurricane;
 
-#include "tile.h++"
-
-namespace hurricane {
-    /* This simple tile is really only useful for checking that
-     * hurricane is capable of building the relevant templates fully.
-     * It's probably not useful for anything because it doesn't
-     * execute any code at all... */
-    class simple_tile: public tile {
-    public:
-        simple_tile(size_t x_posn, size_t y_posn)
-            : hurricane::tile(x_posn, y_posn)
-            {
-            }
-
-        ~simple_tile(void) {}
-
-        int main(size_t x_posn __attribute__((unused)),
-                 size_t y_posn __attribute__((unused)))
-            { return 0; }
-    };
+queue::queue(size_t element_count __attribute__((unused)))
+{
 }
-
-#endif

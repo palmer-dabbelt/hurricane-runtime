@@ -18,8 +18,8 @@
  * along with dreamer-sim.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LIBDRMET__TILE_HXX
-#define LIBDRMET__TILE_HXX
+#ifndef LIBHURRICANE_EMULATOR__TILE_HXX
+#define LIBHURRICANE_EMULATOR__TILE_HXX
 
 #include <memory>
 #include <thread>
@@ -29,6 +29,13 @@ namespace hurricane {
     class tile;
     typedef std::shared_ptr<tile> tile_ptr;
 }
+
+#include "array.h++"
+#include "direction.h++"
+#include "queue.h++"
+#include "word.h++"
+#include <map>
+#include <vector>
 
 namespace hurricane {
     /* Stores a single tile, along with the code that needs to execute
@@ -44,6 +51,14 @@ namespace hurricane {
          * get the return value from a std::thread, which is a bit
          * odd... */
         std::future<int> _main;
+
+        /* FIXME: These shouldn't be public, but the array constructor
+         * wants access to them via a special static function... */
+    public:
+        /* This is essentially the UDN, there's a port that connects
+         * this tile to many other tiles. */
+        std::map<enum direction, queue_ptr> _queues_out;
+        std::map<enum direction, queue_ptr> _queues_in;
 
     public:
         tile(size_t x_posn, size_t y_posn);
@@ -64,6 +79,12 @@ namespace hurricane {
         virtual int main(void) = 0;
         static int main_wrapper(tile* t)
             { return t->main(); }
+
+        /* These functions allow one to enqueue or dequeue a word from
+         * one of the network ports.  These will block until data is
+         * availiable. */
+        void send(enum direction dir, word dat);
+        word recv(enum direction dir);
     };
 }
 
