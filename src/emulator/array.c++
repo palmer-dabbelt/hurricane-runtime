@@ -131,8 +131,6 @@ build_tile_map(size_t width, size_t height,
                 };
 
             for (const auto direction: DIRECTIONS) {
-                fprintf(stderr, "direction: %d\n", (int)direction);
-
                 if (qin(direction) != NULL)
                     tile->_queues_in[direction] = qin(direction);
                 if (qout(direction) != NULL)
