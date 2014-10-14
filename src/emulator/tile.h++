@@ -49,6 +49,10 @@ namespace hurricane {
         tile(size_t x_posn, size_t y_posn);
 
     public:
+        size_t x_posn(void) const { return _x_posn; }
+        size_t y_posn(void) const { return _y_posn; }
+
+    public:
         /* Starts (or blocks until return from) the main function on
          * this tile. */
         void fork(void);
@@ -57,9 +61,9 @@ namespace hurricane {
     protected:
         /* The main function for this tile, which begins running with
          * its position stored in registers. */
-        virtual int main(size_t x_posn, size_t y_posn) = 0;
+        virtual int main(void) = 0;
         static int main_wrapper(tile* t)
-            { return t->main(t->_x_posn, t->_y_posn); }
+            { return t->main(); }
     };
 }
 
