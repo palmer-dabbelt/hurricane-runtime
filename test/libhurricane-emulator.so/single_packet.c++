@@ -1,3 +1,4 @@
+#include "test_main.h++"
 #include <emulator/array.h++>
 
 class tile: public hurricane::tile {
@@ -25,9 +26,7 @@ public:
         }
 };
 
-int main(int argc __attribute__((unused)),
-         char **argv __attribute__((unused))
-    )
+int test_main(void)
 {
     auto array = std::make_shared<hurricane::array>(
         8, 8,
