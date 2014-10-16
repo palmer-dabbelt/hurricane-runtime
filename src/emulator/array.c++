@@ -39,6 +39,22 @@ array::array(size_t width, size_t height,
 {
 }
 
+void array::set_edge_inputs(std::function<edge_input_ptr(size_t x,
+                                                         size_t y)> func)
+{
+    for (size_t y = 0; y < _height; ++y) {
+        auto input = func(0, y);
+
+        auto tilel = _tiles.find(std::make_pair(0, y));
+        auto tile = tilel->second;
+        auto queuel = tile->_queues_in.find(direction::WEST);
+        auto queue = queuel->second;
+        input->_queues_out[direction::EAST] = queue;
+
+        _inputs[std::make_pair(0, y)] = input;
+    }
+}
+
 std::map<std::pair<size_t, size_t>, tile_ptr>
 build_tile_map(size_t width, size_t height,
                std::function<tile_ptr(size_t width,
@@ -149,6 +165,11 @@ void array::fork(void)
         auto tile = pair.second;
         tile->fork();
     }
+
+    for (const auto& pair: _inputs) {
+        auto input = pair.second;
+        input->fork();
+    }
 }
 
 std::map<std::pair<size_t, size_t>, int> array::join(void)
@@ -156,9 +177,17 @@ std::map<std::pair<size_t, size_t>, int> array::join(void)
     std::map<std::pair<size_t, size_t>, int> out;
     for (const auto& pair: _tiles) {
         auto posn = pair.first;
+        fprintf(stderr, "joining (%d, %d)\n",
+                (int)posn.first,
+                (int)posn.second);
         auto tile = pair.second;
 
         out[posn] = tile->join();
+    }
+
+    for (const auto& pair: _inputs) {
+        auto input = pair.second;
+        input->join();
     }
 
     return out;

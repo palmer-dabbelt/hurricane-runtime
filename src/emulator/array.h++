@@ -21,6 +21,7 @@
 #ifndef LIBHURRICANE_EMULATOR__ARRAY_HXX
 #define LIBHURRICANE_EMULATOR__ARRAY_HXX
 
+#include "edge_input.h++"
 #include "on_tile.h++"
 #include "tile.h++"
 #include <functional>
@@ -35,6 +36,7 @@ namespace hurricane {
         const size_t _width;
         const size_t _height;
         const std::map<std::pair<size_t, size_t>, tile_ptr> _tiles;
+        std::map<std::pair<size_t, size_t>, edge_input_ptr> _inputs;
 
     public:
         /* Creates a new array, given the size of that array and a
@@ -54,6 +56,11 @@ namespace hurricane {
         size_t height(void) const { return _height; }
 
     public:
+        /* Allows a program to create input sources that produce data
+         * for use by the Hurricane array during execution. */
+        void set_edge_inputs(std::function<edge_input_ptr(size_t x,
+                                                          size_t y)> func);
+
         /* This actually starts executing the program that was setup
          * to run on DREAMER, returning a map of the return values
          * from every core that returned.  This function will block

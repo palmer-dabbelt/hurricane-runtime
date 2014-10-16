@@ -18,30 +18,27 @@
  * along with hurricane-runtime.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LIBHURRICANE_EMULATOR__TILE_HXX
-#define LIBHURRICANE_EMULATOR__TILE_HXX
+#ifndef LIBHURRICANE_EMULATOR__EDGE_INPUT_HXX
+#define LIBHURRICANE_EMULATOR__EDGE_INPUT_HXX
 
 #include <memory>
-#include <thread>
-#include <future>
 
 namespace hurricane {
-    class tile;
-    typedef std::shared_ptr<tile> tile_ptr;
+    class edge_input;
+    typedef std::shared_ptr<edge_input> edge_input_ptr;
 }
 
-#include "array.h++"
 #include "direction.h++"
 #include "queue.h++"
 #include "word.h++"
-#include <atomic>
+#include <functional>
 #include <map>
-#include <vector>
+#include <memory>
+#include <thread>
 
 namespace hurricane {
-    /* Stores a single tile, along with the code that needs to execute
-     * on that tile. */
-    class tile {
+    /* Stores a special program that can produce an input stream. */
+    class edge_input {
     private:
         /* The position this tile lives at. */
         const size_t _x_posn;
@@ -57,10 +54,9 @@ namespace hurricane {
         /* This is essentially the UDN, there's a port that connects
          * this tile to many other tiles. */
         std::map<enum direction, queue_ptr> _queues_out;
-        std::map<enum direction, queue_ptr> _queues_in;
 
     public:
-        tile(size_t x_posn, size_t y_posn);
+        edge_input(size_t x_posn, size_t y_posn);
 
     public:
         size_t x_posn(void) const { return _x_posn; }
@@ -76,13 +72,12 @@ namespace hurricane {
         /* The main function for this tile, which begins running with
          * its position stored in registers. */
         virtual int main(void) = 0;
-        static void main_wrapper(tile* t);
+        static void main_wrapper(edge_input* t);
 
         /* These functions allow one to enqueue or dequeue a word from
          * one of the network ports.  These will block until data is
          * availiable. */
         void send(enum direction dir, word dat);
-        word recv(enum direction dir);
     };
 }
 
